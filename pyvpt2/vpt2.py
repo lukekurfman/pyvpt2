@@ -469,6 +469,7 @@ def process_vpt2(quartic_result: AtomicResult, **kwargs) -> VPTResult:
         # TODO: Fix linear ZPVEs
         chi0 += phi_iijj[i, i]
         chi0 -= (7 / 9) * phi_ijk[i, i, i] ** 2 / omega[i]
+        print("chi0_computation,i,i,i:", chi0, i, i, i) # Luke K., 2/11/2026
 
         for j in v_ind_nondegen:
             if i == j:
@@ -488,6 +489,7 @@ def process_vpt2(quartic_result: AtomicResult, **kwargs) -> VPTResult:
 
             else:
                 chi0 += 3 * omega[i]* phi_ijk[i, j, j] ** 2 / (4 * omega[j] ** 2 - omega[i] ** 2)
+                print("chi0_computation,i,j,j:", chi0, i, j, j) # Luke K., 2/11/2026
                 chi[i, j] = phi_iijj[i, j]
                 rot = 0
                 for b_ind in range(0, 3):
@@ -549,6 +551,7 @@ def process_vpt2(quartic_result: AtomicResult, **kwargs) -> VPTResult:
 
                     if (j > i) and (k > j):
                         chi0 +=  2 * phi_ijk[i, j, k] ** 2 * delta_0
+                        print("chi0_computation,i,j>i,k>j:", chi0, i, j, k) # Luke K., 2/11/2026
 
                 chi[i, j] /= 4
 
@@ -577,6 +580,7 @@ def process_vpt2(quartic_result: AtomicResult, **kwargs) -> VPTResult:
             chi[i, j] /= 4
             chi[j, i] = chi[i, j]
 
+    print("chi0_computation before v_ind_degen", chi0) # Luke K., 2/11/2026
     for i in v_ind_degen:
         for j in v_ind_degen:
             if i == j:
@@ -614,21 +618,30 @@ def process_vpt2(quartic_result: AtomicResult, **kwargs) -> VPTResult:
                 # TODO: multiple degeneracies
                 pass
 
+    print("chi0_computation before b_ind", chi0) # Luke K., 2/11/2026
     for b_ind in range(3):
         if rotor_type == "RT_LINEAR": continue
         zeta_sum = 0
+        print("zeta_sum,b_ind:", zeta_sum, b_ind) # Luke K., 2/11/2026
+        print("B[b_ind],b_ind:", B[b_ind], b_ind) # Luke K., 2/11/2026
         for [i,j] in itertools.combinations(v_ind, 2):
             zeta_sum += (zeta[b_ind, i, j])**2
         chi0 -= 16 * B[b_ind] * (1 + 2*zeta_sum)
+        print("chi0_computation,b_ind,i,j:", chi0, b_ind,i,j) # Luke K., 2/11/2026
 
     chi0 /= 64
+    print("chi0_computation/64:", chi0) # Luke K., 2/11/2026
 
     zpve = chi0
+    print("chi0: . .", chi0) # Luke K., 2/11/2026
     for i in v_ind:
         zpve += (1 / 2) * (omega[i] + (1 / 2) * chi[i, i])
+        print("i,omega[i],chi[i,i]:", i, ". .", omega[i], chi[i, i]) # Luke K., 2/11/2026
         for j in v_ind:
             if j > i:
                 zpve += (1 / 4) * chi[i, j]
+                print("i,j,chi[i,i]:", i, j, ". .", chi[i, j]) # Luke K., 2/11/2026
+    print("zpve after: ", zpve) # Luke K., 2/11/2026
 
 
     print("\nAnharmonic Constants (cm-1)")
@@ -666,6 +679,7 @@ def process_vpt2(quartic_result: AtomicResult, **kwargs) -> VPTResult:
         for i in v_ind_omit:
             zpve += 1/2 * omega[i]
             anharmonic[i] = omega[i]
+    print("zpve after v_ind_omitted: ", zpve) # Luke K., 2/11/2026
 
     extras = {}
     if kwargs["FERMI"] and kwargs["GVPT2"]:
