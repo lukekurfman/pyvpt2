@@ -789,21 +789,21 @@ def print_result(results: VPTResult, v_ind: np.ndarray):
 
     print("\n\nCubic (cm-1):")
     for [i,j,k] in itertools.product(v_ind, repeat=3):
-        if abs(phi_ijk[i, j, k]) > 10:
-            print(i + 1, j + 1, k + 1, "    ", phi_ijk[i, j, k])
+        #if abs(phi_ijk[i, j, k]) > 10:
+        print(i + 1, j + 1, k + 1, "    ", phi_ijk[i, j, k])
 
     print("\nQuartic (cm-1):")
     for [i,j] in itertools.product(v_ind, repeat=2):
-        if abs(phi_iijj[i, j]) > 10:
-            print(i + 1, i + 1, j + 1, j + 1, "    ", phi_iijj[i, j])
+        #if abs(phi_iijj[i, j]) > 10:
+        print(i + 1, i + 1, j + 1, j + 1, "    ", phi_iijj[i, j])
 
     print("\nB Rotational Constants (cm-1)")
     print(B[0], B[1], B[2], sep='    ')
 
     print("\nCoriolis Constants (cm-1):")
     for [i,j,k] in itertools.product(range(3), v_ind, v_ind):
-        if abs(zeta[i, j, k]) > 1e-5:
-            print(i + 1, j + 1, k + 1, "    ", zeta[i, j, k])
+        #if abs(zeta[i, j, k]) > 1e-5:
+        print(i + 1, j + 1, k + 1, "    ", zeta[i, j, k])
 
     #print("\nVPT2 analysis complete...")
     print("\nFundamentals (cm-1):")
