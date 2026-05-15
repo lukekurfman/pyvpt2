@@ -39,7 +39,7 @@ def _findif_schema_to_wfn(findif_model: AtomicResult) -> psi4.core.Wavefunction:
 
         ret_e = findif_model.properties.return_energy
         ret_g = findif_model.properties.return_gradient
-        ret_h = findif_model.return_result
+        ret_h = findif_model.properties.return_hessian
         if ret_e is not None:
             obj.set_variable("CURRENT ENERGY", ret_e)
         if ret_g is not None:
